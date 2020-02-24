@@ -44,6 +44,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".PopupActivity"
+        android:windowSoftInputMode="adjustPan"
+        android:theme = "@style/PopupTheme">
+    </activity>
+
     </application>
 
 </manifest>

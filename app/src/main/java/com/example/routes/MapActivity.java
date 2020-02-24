@@ -1,6 +1,7 @@
 package com.example.routes;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -45,6 +48,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.maps_activity);
         //checking android version to avoid unsupported versions that may make the app crash
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -55,6 +60,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
     }
 
@@ -116,7 +123,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         LatLng Nairobi = new LatLng(-1.2858872, 36.8173099);
 
         //Zoom and move the map to the location described above
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Nairobi, (float) 8.402));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Nairobi, (float) 10.204));
+
+        Intent popupIntent = new Intent(MapActivity.this, PopupActivity.class);
+        startActivity(popupIntent);
+        overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
+
     }
     //Creating a mGoogleApiClient
     protected  synchronized  void buildGoogleApiClient()
@@ -203,4 +215,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onMyLocationClick(@NonNull Location location) {
 
     }
+
+
 }
