@@ -1,6 +1,7 @@
 package com.example.routes;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,9 +17,13 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +41,11 @@ import java.util.Map;
 public class PopupActivity extends FragmentActivity {
     private static final String TAG = PopupActivity.class.getSimpleName();
 
-    String httpurl = "http://10.6.53.107/retrieve.php";
+    String httpurl = "http://10.6.58.189/retrieve.php";
 
     private String jsonResult;
+
+    String destHolder;
 
     ListView saccolistview;
 
@@ -53,7 +61,7 @@ public class PopupActivity extends FragmentActivity {
 
         saccolistview = findViewById(R.id.saccos_list);
 
-        accessWebService();
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -78,22 +86,42 @@ public class PopupActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+        destHolder = pref.getString("KEY_DEST", null);
+
+
+        accessWebService();
+
+
     }
 
     @SuppressLint("StaticFieldLeak")
     private class JsonReadTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
+
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(params[0]);
+            httppost.setEntity(destHolder);
+
+            httppost.setHeader("Content-type", "application/json");
+
+
             try {
+
+
                 HttpResponse response = httpclient.execute(httppost);
-                jsonResult = inputStreamToString(
-                        response.getEntity().getContent()).toString();
+
+                jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
+
+
         }
 
         private StringBuilder inputStreamToString(InputStream is) {
@@ -112,6 +140,8 @@ public class PopupActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(),
                         "Error." + e.toString(), Toast.LENGTH_LONG).show();
             }
+
+
             return answer;
         }
 
@@ -119,6 +149,8 @@ public class PopupActivity extends FragmentActivity {
         protected void onPostExecute(String result) {
             ListDrawer();
         }
+
+
     }// end async task
 
     public void accessWebService() {
@@ -129,23 +161,27 @@ public class PopupActivity extends FragmentActivity {
 
     // build hash set for list view
     public void ListDrawer() {
-        List<Map<String, String>> saccosList = new ArrayList<Map<String, String>>();
+
+
+        List<Map<String, String>> saccosList = new ArrayList<>();
 
         try {
             JSONObject jsonResponse = new JSONObject(jsonResult);
+            jsonResponse.put("destination", destHolder);
             JSONArray jsonMainNode = jsonResponse.optJSONArray("routes");
+
             assert jsonMainNode != null;
             for (int i = 0; i < jsonMainNode.length(); i++) {
                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                 String name = jsonChildNode.optString("sacco");
                 String number = jsonChildNode.optString("route_code");
                 String outPut = name + "     -     " + number;
-                saccosList.add(showSaccos("routes", outPut));
+                saccosList.add(showSaccos(outPut));
 
                 Log.d(TAG, jsonResult);
             }
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Error" + e.toString(),
+            Toast.makeText(getApplicationContext(), "Error22" + e.toString(),
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -153,11 +189,13 @@ public class PopupActivity extends FragmentActivity {
                 android.R.layout.simple_list_item_1,
                 new String[] { "routes" }, new int[] { android.R.id.text1 });
         saccolistview.setAdapter(simpleAdapter);
+
+
     }
 
-    private HashMap<String, String> showSaccos(String name, String number) {
+    private HashMap<String, String> showSaccos(String number) {
         HashMap<String, String> employeeNameNo = new HashMap<String, String>();
-        employeeNameNo.put(name, number);
+        employeeNameNo.put("routes", number);
         return employeeNameNo;
     }
 
