@@ -3,6 +3,7 @@ package com.example.routes;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,6 +25,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +34,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -103,20 +107,26 @@ public class PopupActivity extends FragmentActivity {
 
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(params[0]);
-            httppost.setEntity(destHolder);
 
-            httppost.setHeader("Content-type", "application/json");
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("destination", destHolder));
+            try {
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
 
             try {
 
-
                 HttpResponse response = httpclient.execute(httppost);
+
 
                 jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
 
 
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
             return null;
@@ -141,7 +151,6 @@ public class PopupActivity extends FragmentActivity {
                         "Error." + e.toString(), Toast.LENGTH_LONG).show();
             }
 
-
             return answer;
         }
 
@@ -151,12 +160,15 @@ public class PopupActivity extends FragmentActivity {
         }
 
 
+
     }// end async task
 
     public void accessWebService() {
         JsonReadTask task = new JsonReadTask();
         // passes values for the urls string array
+
         task.execute(httpurl);
+
     }
 
     // build hash set for list view
@@ -167,7 +179,6 @@ public class PopupActivity extends FragmentActivity {
 
         try {
             JSONObject jsonResponse = new JSONObject(jsonResult);
-            jsonResponse.put("destination", destHolder);
             JSONArray jsonMainNode = jsonResponse.optJSONArray("routes");
 
             assert jsonMainNode != null;
