@@ -146,9 +146,7 @@ public class PopupActivity extends FragmentActivity {
             }
 
             catch (IOException e) {
-                // e.printStackTrace();
-                Toast.makeText(getApplicationContext(),
-                        "Error." + e.toString(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
 
             return answer;
@@ -192,8 +190,8 @@ public class PopupActivity extends FragmentActivity {
                 Log.d(TAG, jsonResult);
             }
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "Error22" + e.toString(),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Can't find matatu for that route...for now ;-)",
+                    Toast.LENGTH_LONG).show();
         }
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, saccosList,
