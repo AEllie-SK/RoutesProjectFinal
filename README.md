@@ -1,28 +1,28 @@
-🚌 Routes – Nairobi Matatu Route Finder
+## 🚌 Routes – Nairobi Matatu Route Finder
 
-Routes is a Java-based mobile application inspired by the Digital Matatus Project, a groundbreaking initiative by students and professors—primarily from the University of Nairobi (UoN)—to map and digitize Nairobi’s matatu (public minibus) transit routes.
+Routes is a Java-based mobile application inspired by the [Digital Matatus Project](https://www.digitalmatatus.com/), a groundbreaking initiative by students and professors—primarily from the University of Nairobi (UoN)—to map and digitize Nairobi’s matatu (public minibus) transit routes.
 
 This app makes urban navigation more accessible by helping users determine the best matatu routes to take from a given starting point to their destination.
 
-🚀 Features
+## 🚀 Features
 
-🔎 Route Finder: Input your start and end points and get the optimal matatu route.
+**🔎 Route Finder:** Input your start and end points and get the optimal matatu route.
 
-🗺️ Mapped Directions: Visual representation of the route on a map.
+**🗺️ Mapped Directions:** Visual representation of the route on a map.
 
-🚌 Matatu SACCO Details: Displays the SACCO name and route number to use.
+**🚌 Matatu SACCO Details:** Displays the SACCO name and route number to use.
 
-🌐 Offline-Ready (Optional): Leverages local GTFS data for faster access and offline functionality.
+**🌐 Offline-Ready (Optional):** Leverages local GTFS data for faster access and offline functionality.
 
-📲 Screenshots
+## 📲 Screenshots
 
 Coming soon — UI mockups and app screenshots
 
-🧠 Background
+## 🧠 Background
 
 This project builds on the Digital Matatus open-data initiative, which used GTFS (General Transit Feed Specification) to document informal transit systems in Nairobi. The goal of Routes is to make this data usable and accessible for everyday commuters, especially those unfamiliar with the city’s informal transit patterns.
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 Language: Java
 
@@ -34,7 +34,7 @@ Transit Data Format: GTFS (General Transit Feed Specification)
 
 Database: SQLite (local route storage) / Firebase (optional for sync)
 
-📦 Installation
+## 📦 Installation
 
 Prerequisites:
 
@@ -55,7 +55,7 @@ Add your API keys and configure any required environment variables.
 
 Run the app on your preferred device/emulator.
 
-🗂️ Project Structure
+## 🗂️ Project Structure
 
 routes/
 ├── app/
@@ -67,7 +67,7 @@ routes/
 ├── README.md
 └── build.gradle
 
-🧪 Future Improvements
+## 🧪 Future Improvements
 
 Real-time location tracking and route suggestions
 
@@ -79,16 +79,16 @@ Multilingual support for Swahili and English
 
 Offline navigation support
 
-🙌 Contributors
+## 🙌 Contributors
 
 Elizabeth Kenaiyan – Project Lead & Developer
 
 Inspired by: Digital Matatus Project (UoN & international collaborators)
 
-📄 License
+##  📄 License
 
 This project is licensed under the MIT License – see the LICENSE file for details.
 
-📬 Contact
+## 📬 Contact
 
 Got feedback or want to contribute? Reach out at seinkenaiyan@gmail.com
